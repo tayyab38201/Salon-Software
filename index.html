@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glamour Salon - Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Customer Booking Portal (Public) -->
+    <div id="publicBooking" class="public-portal">
+        <nav class="public-nav">
+            <div class="nav-container">
+                <div class="logo">
+                    <i class="fas fa-cut"></i>
+                    <span>Glamour Salon</span>
+                </div>
+                <button class="btn btn-primary" onclick="showAdminLogin()">
+                    <i class="fas fa-lock"></i> Admin Login
+                </button>
+            </div>
+        </nav>
+
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Welcome to Glamour Salon</h1>
+                <p>Book your appointment with the best stylists in town</p>
+                <button class="btn btn-primary btn-lg" onclick="scrollToBooking()">
+                    <i class="fas fa-calendar-alt"></i> Book Now
+                </button>
+            </div>
+        </section>
+
+        <section class="services-showcase" id="servicesShowcase">
+            <h2>Our Services</h2>
+            <div class="services-showcase-grid" id="publicServicesGrid"></div>
+        </section>
+
+        <section class="booking-section" id="bookingSection">
+            <h2>Book Your Appointment</h2>
+            <div class="booking-form-container">
+                <form id="publicBookingForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> Your Name</label>
+                            <input type="text" name="name" required placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> Email</label>
+                            <input type="email" name="email" required placeholder="john@example.com">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-phone"></i> Phone</label>
+                            <input type="tel" name="phone" required placeholder="555-0123">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-scissors"></i> Service</label>
+                            <select name="service_id" id="publicServiceSelect" required>
+                                <option value="">Select a service</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-user-tie"></i> Preferred Staff</label>
+                            <select name="staff_id" id="publicStaffSelect" required>
+                                <option value="">Select staff member</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-calendar"></i> Date</label>
+                            <input type="date" name="booking_date" id="publicBookingDate" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-clock"></i> Available Times</label>
+                            <div id="timeSlots" class="time-slots"></div>
+                            <input type="hidden" name="booking_time" id="selectedTime">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-check"></i> Confirm Booking
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section class="staff-showcase">
+            <h2>Meet Our Team</h2>
+            <div class="staff-showcase-grid" id="publicStaffGrid"></div>
+        </section>
+
+        <!-- Booking Status Check Section -->
+        <section class="booking-status-section">
+            <h2>Check Your Booking Status</h2>
+            <p style="text-align: center; color: var(--gray); margin-bottom: 2rem;">Enter your email or phone number to check your appointment status</p>
+            
+            <div class="status-check-container">
+                <form id="statusCheckForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> Email</label>
+                            <input type="email" id="checkEmail" placeholder="your@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>OR</label>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-phone"></i> Phone</label>
+                            <input type="tel" id="checkPhone" placeholder="555-0123">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-search"></i> Check Status
+                    </button>
+                </form>
+
+                <div id="statusResult" style="display: none;"></div>
+            </div>
+        </section>
+
+        <!-- Recent Activity / Social Proof Section -->
+        <section class="recent-activity-section">
+            <h2>Recent Appointments</h2>
+            <p style="text-align: center; color: var(--gray); margin-bottom: 2rem;">See what services our customers are enjoying</p>
+            <div class="activity-feed" id="publicActivityFeed"></div>
+        </section>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="admin-panel" style="display: none;">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <i class="fas fa-cut"></i>
+                    <span>Glamour Salon Admin</span>
+                </div>
+                <div class="nav-menu" id="navMenu">
+                    <a href="#" class="nav-link active" data-page="dashboard">
+                        <i class="fas fa-home"></i> Dashboard
+                    </a>
+                    <a href="#" class="nav-link" data-page="bookings">
+                        <i class="fas fa-calendar-alt"></i> Bookings
+                    </a>
+                    <a href="#" class="nav-link" data-page="customers">
+                        <i class="fas fa-users"></i> Customers
+                    </a>
+                    <a href="#" class="nav-link" data-page="services">
+                        <i class="fas fa-scissors"></i> Services
+                    </a>
+                    <a href="#" class="nav-link" data-page="staff">
+                        <i class="fas fa-user-tie"></i> Staff
+                    </a>
+                    <a href="#" class="nav-link" data-page="reports">
+                        <i class="fas fa-chart-bar"></i> Reports
+                    </a>
+                    <a href="#" class="nav-link" data-page="settings">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                </div>
+                <button class="btn btn-danger btn-sm" onclick="adminLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+                <button class="mobile-toggle" id="mobileToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <section id="dashboard" class="page active">
+                <h1 class="page-title">Dashboard</h1>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="todayBookings">0</h3>
+                            <p>Today's Bookings</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalCustomers">0</h3>
+                            <p>Total Customers</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="monthlyRevenue">$0</h3>
+                            <p>Monthly Revenue</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="pendingBookings">0</h3>
+                            <p>Pending Bookings</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-content">
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <h2>Today's Schedule</h2>
+                            <div class="schedule-list" id="todaySchedule"></div>
+                        </div>
+                        <div class="dashboard-card">
+                            <h2>Recent Activity</h2>
+                            <div class="activity-list" id="recentActivity"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bookings Page -->
+            <section id="bookings" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">Bookings Management</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="addBookingBtn">
+                            <i class="fas fa-plus"></i> New Booking
+                        </button>
+                        <button class="btn btn-success" onclick="exportBookings()">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="filter-bar">
+                    <input type="text" id="searchBooking" placeholder="Search bookings...">
+                    <select id="filterStatus">
+                        <option value="">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                    <input type="date" id="filterDate">
+                </div>
+
+                <div class="table-container">
+                    <table id="bookingsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Customer</th>
+                                <th>Service</th>
+                                <th>Staff</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                                <th>Amount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Customers Page -->
+            <section id="customers" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">Customers</h1>
+                    <button class="btn btn-primary" id="addCustomerBtn">
+                        <i class="fas fa-plus"></i> Add Customer
+                    </button>
+                </div>
+                
+                <div class="filter-bar">
+                    <input type="text" id="searchCustomer" placeholder="Search customers...">
+                </div>
+
+                <div class="table-container">
+                    <table id="customersTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Total Visits</th>
+                                <th>Last Visit</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Services Page -->
+            <section id="services" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">Services</h1>
+                    <button class="btn btn-primary" id="addServiceBtn">
+                        <i class="fas fa-plus"></i> Add Service
+                    </button>
+                </div>
+
+                <div class="services-grid" id="servicesGrid"></div>
+            </section>
+
+            <!-- Staff Page -->
+            <section id="staff" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">Staff Members</h1>
+                    <button class="btn btn-primary" id="addStaffBtn">
+                        <i class="fas fa-plus"></i> Add Staff
+                    </button>
+                </div>
+
+                <div class="staff-grid" id="staffGrid"></div>
+            </section>
+
+            <!-- Reports Page -->
+            <section id="reports" class="page">
+                <h1 class="page-title">Reports & Analytics</h1>
+                
+                <div class="reports-filters">
+                    <select id="reportType">
+                        <option value="revenue">Revenue Report</option>
+                        <option value="bookings">Bookings Report</option>
+                        <option value="staff">Staff Performance</option>
+                    </select>
+                    <input type="date" id="reportStartDate">
+                    <input type="date" id="reportEndDate">
+                    <button class="btn btn-primary" onclick="generateReport()">
+                        <i class="fas fa-chart-line"></i> Generate Report
+                    </button>
+                </div>
+
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <h3>Total Revenue</h3>
+                        <div class="report-value" id="reportRevenue">$0</div>
+                    </div>
+                    <div class="report-card">
+                        <h3>Total Bookings</h3>
+                        <div class="report-value" id="reportBookings">0</div>
+                    </div>
+                    <div class="report-card">
+                        <h3>New Customers</h3>
+                        <div class="report-value" id="reportNewCustomers">0</div>
+                    </div>
+                    <div class="report-card">
+                        <h3>Cancellation Rate</h3>
+                        <div class="report-value" id="reportCancellation">0%</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Settings Page -->
+            <section id="settings" class="page">
+                <h1 class="page-title">Settings</h1>
+                
+                <div class="settings-container">
+                    <div class="settings-card">
+                        <h3><i class="fas fa-building"></i> Salon Information</h3>
+                        <form id="salonInfoForm">
+                            <div class="form-group">
+                                <label>Salon Name</label>
+                                <input type="text" name="salon_name" value="Glamour Salon">
+                            </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <input type="text" name="address" value="123 Beauty Street">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="tel" name="phone" value="555-SALON">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" name="email" value="info@glamoursalon.com">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </form>
+                    </div>
+
+                    <div class="settings-card">
+                        <h3><i class="fas fa-clock"></i> Working Hours</h3>
+                        <form id="workingHoursForm">
+                            <div class="form-group">
+                                <label>Opening Time</label>
+                                <input type="time" name="opening_time" value="09:00">
+                            </div>
+                            <div class="form-group">
+                                <label>Closing Time</label>
+                                <input type="time" name="closing_time" value="19:00">
+                            </div>
+                            <div class="form-group">
+                                <label>Slot Duration (minutes)</label>
+                                <input type="number" name="slot_duration" value="30">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </form>
+                    </div>
+
+                    <div class="settings-card">
+                        <h3><i class="fas fa-bell"></i> Notifications</h3>
+                        <div class="settings-toggle">
+                            <label>
+                                <input type="checkbox" checked> Email notifications for new bookings
+                            </label>
+                            <label>
+                                <input type="checkbox" checked> SMS reminders to customers
+                            </label>
+                            <label>
+                                <input type="checkbox"> Daily report emails
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal Container -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle">Modal Title</h2>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content login-modal">
+            <span class="close" onclick="closeLoginModal()">&times;</span>
+            <h2>Admin Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Username</label>
+                    <input type="text" name="username" required placeholder="admin">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" name="password" required placeholder="admin123">
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <p class="login-hint">Default: admin / admin123</p>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
