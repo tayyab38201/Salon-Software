@@ -3,6 +3,7 @@
 A comprehensive and modern **Salon/Barber Shop Management System** developed as a full-stack application to streamline appointment booking, staff management, and administrative oversight.
 
 ---
+**Database Requirements: Create Database: `salon_management` and Import `salon_db.sql`**
 
 ## ✨ Key Features
 
