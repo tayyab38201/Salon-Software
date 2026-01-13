@@ -2,7 +2,8 @@
 
 A comprehensive and modern **Salon/Barber Shop Management System** developed as a full-stack application to streamline appointment booking, staff management, and administrative oversight.
 
----
+<img width="1351" height="597" alt="1" src="https://github.com/user-attachments/assets/3618dc47-b0b1-4304-badd-7fd0db86b0e9" />
+
 **Database Requirements: Create Database: `salon_management` and Import `salon_db.sql`**
 
 ## ✨ Key Features
@@ -27,6 +28,9 @@ This system is divided into two main parts: a **Public Booking Portal** for cust
 * **Secure Login:** Separate login for admin access.
 
 ---
+<img width="1285" height="618" alt="2" src="https://github.com/user-attachments/assets/d1a52d45-a519-496e-9c90-bf75cc07b782" />
+<img width="1175" height="615" alt="3" src="https://github.com/user-attachments/assets/d32be5c0-204a-41b3-a565-a80f611a9459" />
+
 
 ## 💻 Technology Stack
 
@@ -40,6 +44,8 @@ This project is built using the foundational web development stack for speed and
 | **Database** | **MySQL** / **MariaDB** | Structured storage for bookings, customers, services, and staff data. |
 
 ---
+<img width="1162" height="519" alt="4" src="https://github.com/user-attachments/assets/00f1ebfa-350c-44be-9ab8-a07302aae0e7" />
+<img width="1153" height="616" alt="5" src="https://github.com/user-attachments/assets/f907dcca-42ac-47e7-bf68-261a65598b4d" />
 
 ## ⚙️ Installation and Setup
 
